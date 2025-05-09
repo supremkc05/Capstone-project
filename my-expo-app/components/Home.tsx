@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+
 export default function Home() {
   const insets = useSafeAreaInsets();
   const [isScanning, setIsScanning] = useState(false);

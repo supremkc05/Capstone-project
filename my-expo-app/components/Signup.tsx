@@ -4,7 +4,8 @@ import {
   View,
   Image,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
@@ -18,6 +19,46 @@ export default function Signup({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleSignup = async () => {
+    if (!username || !email || !password || !confirmPassword) {
+      Alert.alert('Error', 'Please fill all fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://192.168.18.124:3000/Signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data === 'exist') {
+        Alert.alert('Error', 'User already exists with this email');
+      } else if (data.user) {
+        Alert.alert('Success', 'Account created successfully');
+        navigation.replace('AfterLogin');
+      } else {
+        Alert.alert('Error', 'Something went wrong');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to connect to server');
+    }
+  };
 
   return (
     <View className="relative flex-1 items-center justify-center px-6 bg-white">
@@ -64,7 +105,7 @@ export default function Signup({ navigation }: Props) {
 
         <TouchableOpacity
           className="bg-buttons p-3 rounded-md"
-          onPress={() => navigation.replace('AfterLogin')}
+          onPress={handleSignup}
         >
           <Text className="text-center text-white text-lg font-medium">Signup</Text>
         </TouchableOpacity>

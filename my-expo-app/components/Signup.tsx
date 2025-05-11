@@ -32,7 +32,7 @@ export default function Signup({ navigation }: Props) {
     }
 
     try {
-      const response = await fetch('http://192.168.18.124:3000/Signup', {
+      const response = await fetch('http://192.168.18.137:3000/Signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

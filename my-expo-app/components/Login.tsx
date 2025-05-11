@@ -25,7 +25,7 @@ export default function Login({ navigation }: Props) {
     }
 
     try {
-      const response = await fetch('http://192.168.18.124:3000/Login', {
+      const response = await fetch('http://192.168.18.137:3000/Login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

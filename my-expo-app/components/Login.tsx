@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
+import { BASE_URL } from '../config';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import { useSelector, useDispatch } from 'react-redux'
+import { updateEmail } from 'redux/slices/Profile';
 
 const topSub = require('../assets/background/topSub.png');
 
@@ -17,35 +20,38 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export default function Login({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter email and password');
-      return;
+  if (!email || !password) {
+    Alert.alert('Error', 'Please enter email and password');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/Login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (data.message === 'Login successful') {
+      dispatch(updateEmail(email));
+      Alert.alert('Success', 'Logged in successfully');
+      navigation.replace('AfterLogin');
+    } else {
+      Alert.alert('Login Failed', data.message);
     }
-
-    try {
-      const response = await fetch('http://192.168.18.137:3000/Login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (data.message === 'Login successful') {
-        Alert.alert('Success', 'Logged in successfully');
-        navigation.replace('AfterLogin');
-      } else {
-        Alert.alert('Login Failed', data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Failed to connect to server');
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Error', 'Failed to connect to server');
+  }
+};
 
   return (
     <View className="relative flex-1 items-center justify-center px-6 bg-white">

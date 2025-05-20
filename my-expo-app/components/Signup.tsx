@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import { BASE_URL } from '../config';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 
@@ -32,7 +33,7 @@ export default function Signup({ navigation }: Props) {
     }
 
     try {
-      const response = await fetch('http://192.168.18.137:3000/Signup', {
+      const response = await fetch(`${BASE_URL}/Signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

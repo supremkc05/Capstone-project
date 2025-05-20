@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { View, Text, TouchableOpacity, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faAngleRight, faPen } from '@fortawesome/free-solid-svg-icons';
 import UploadImageModal from '../components/UploadImageModal';
+import { useSelector } from 'react-redux';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>;
 
 export default function Profile() {
   const navigation = useNavigation<NavigationProp>();
   const [userName, setUserName] = useState<string>("User Name");
-  const [email, setEmail] = useState<string>("user@gmail.com");
+  const email = useSelector((state: any) => state.email.value);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+
+
 
   return (
     <>
@@ -27,9 +32,10 @@ export default function Profile() {
 
         <Text className="text-[2.5rem] m-2">Profile</Text>
 
-        {/* Profile Picture with Pen Icon */}
         <View className="relative mb-4">
-          <View className="w-[150px] h-[150px] rounded-full bg-red-400"></View>
+          <View className="w-[150px] h-[150px] rounded-full bg-red-400">
+            
+          </View>
           <TouchableOpacity
             className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow"
             onPress={() => setModalVisible(true)}

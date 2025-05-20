@@ -1,7 +1,7 @@
 import React from 'react';
+import { Platform, StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import AfterLogin from './components/AfterLogin';
@@ -14,8 +14,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function Index() {
   return (
     <>
-      <StatusBar backgroundColor="#021F61" style="light" />
-      <NavigationContainer>
+    {Platform.OS === 'android' && (
+      <StatusBar backgroundColor="#021F61" barStyle="light-content" />
+    )}      <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ gestureEnabled: false, headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={Signup} />

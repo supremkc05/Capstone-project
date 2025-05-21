@@ -12,6 +12,9 @@ const newSchema = new mongoose.Schema({
     username:{
         type: String,
         required: true
+    },
+    profilepic:{
+        type: Buffer
     }
 })
 

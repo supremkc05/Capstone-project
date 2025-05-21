@@ -10,6 +10,9 @@ import {
 import { BASE_URL } from '../config';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import { updateEmail } from 'redux/slices/Profile';
+import { useDispatch } from 'react-redux'
+
 
 const topSub = require('../assets/background/topSub.png');
 
@@ -20,6 +23,8 @@ export default function Signup({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+    const dispatch = useDispatch();
+
 
   const handleSignup = async () => {
     if (!username || !email || !password || !confirmPassword) {
@@ -51,6 +56,7 @@ export default function Signup({ navigation }: Props) {
         Alert.alert('Error', 'User already exists with this email');
       } else if (data.user) {
         Alert.alert('Success', 'Account created successfully');
+        dispatch(updateEmail(email));
         navigation.replace('AfterLogin');
       } else {
         Alert.alert('Error', 'Something went wrong');

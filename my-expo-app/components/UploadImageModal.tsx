@@ -1,25 +1,64 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import { useSelector } from 'react-redux';
+import { BASE_URL } from 'config';
 
 type UploadImageModalProps = {
   visible: boolean;
   onClose: () => void;
 };
 
-const UploadImageModal: React.FC<UploadImageModalProps> = ({ visible, onClose }) => {
+const UploadImageModal: React.FC<UploadImageModalProps> = ({ visible, onClose}) => {
+    const email = useSelector((state: any) => state.email.value);
+
+
+  const uploadImageToServer = async (uri: string) => {
+    try {
+      const fileInfo = await FileSystem.getInfoAsync(uri);
+      const fileName = uri.split('/').pop() || 'profile.jpg';
+      const fileType = fileName.split('.').pop();
+
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('profilepic', {
+        uri,
+        name: fileName,
+        type: `image/${fileType}`,
+      } as any); // `as any` needed for React Native FormData types
+
+      const response = await fetch(`${BASE_URL}/profilePic`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const result = await response.json();
+      console.log(result);
+      Alert.alert('Upload Success', result.message);
+      onClose();
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      Alert.alert('Upload Failed', 'Something went wrong!');
+    }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    if (!result.canceled) {
-      console.log('Selected image:', result.assets[0].uri);
-      // handle the selected image URI
+    if (!result.canceled && result.assets.length > 0) {
+      const imageUri = result.assets[0].uri;
+      console.log('Selected image:', imageUri);
+      await uploadImageToServer(imageUri);
     }
   };
 

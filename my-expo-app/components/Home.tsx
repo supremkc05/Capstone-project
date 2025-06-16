@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import RNCamera from './RNCamera';
 
 
 export default function Home() {
   const insets = useSafeAreaInsets();
-  const [isScanning, setIsScanning] = useState(false);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
 
   const toggleScanner = () => {
     setIsScanning((prev) => !prev);
@@ -18,7 +19,13 @@ export default function Home() {
       </View>
       <View className="flex-1">
         <View className="border-2 border-main m-9 flex-1 justify-center items-center">
-          {/* camera */}
+          {isScanning ? (
+            <RNCamera/>
+          ) : (
+            <Text className="text-xl text-gray-600 text-center">
+              Press button below to scan potholes
+            </Text>
+          )}
         </View>
         <View className="mx-9 justify-center items-center mb-5">
           <TouchableOpacity

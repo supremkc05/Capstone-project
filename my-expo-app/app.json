@@ -3,35 +3,31 @@
     "name": "my-expo-app",
     "slug": "my-expo-app",
     "version": "1.0.0",
-
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "experiments": {
       "tsconfigPaths": true
     },
-
     "plugins": [
-       [
-        "expo-image-picker",
+      [
+        "react-native-vision-camera",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera."
         }
       ]
     ],
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -39,6 +35,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.matabhagwan.myexpoapp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9abb1c91-080b-47de-a2ec-2a05dd8a5c4d"
       }
     }
   }

@@ -13,17 +13,16 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Index() {
   return (
-    <>
-    {Platform.OS === 'android' && (
-      <StatusBar backgroundColor="#021F61" barStyle="light-content" />
-    )}      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" screenOptions={{ gestureEnabled: false, headerShown: false }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="AfterLogin" component={AfterLogin} />
-          <Stack.Screen name="Profile" component={Profile} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+    <NavigationContainer>
+      {Platform.OS === 'android' && (
+        <StatusBar backgroundColor="#021F61" barStyle="light-content" />
+      )}
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ gestureEnabled: false, headerShown: false }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="AfterLogin" component={AfterLogin} />
+        <Stack.Screen name="Profile" component={Profile} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

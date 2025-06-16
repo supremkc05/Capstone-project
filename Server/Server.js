@@ -5,7 +5,13 @@ const collection = require('./mongo');
 const app = express();
 const PORT = 3000;
 
-const uri = "mongodb+srv://samirguragain9:mcDPjosxUZPauxUA@cluster0.l9dbgr0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// Add this new endpoint after other app.post definitions
+app.post('/pothole-detection', async (req, res) => {
+  console.log('Pothole detected:', req.body);
+  res.json({ message: 'Detection recorded' });
+});
+
+const uri = "mongodb://localhost:27017/your_database_name"; // Replace with your MongoDB URI
 
 // MongoDB connection
 try {

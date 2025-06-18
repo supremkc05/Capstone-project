@@ -1,19 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const collection = require('./mongo');
+const collection = require('./mongo'); // Assuming this is your Mongoose User model
+const Detection = require('./detection');
 const app = express();
 const PORT = 3000;
+const cors = require('cors');
+app.use(cors());
 
-// Add this new endpoint after other app.post definitions
-app.post('/pothole-detection', async (req, res) => {
-  console.log('Pothole detected:', req.body);
-  res.json({ message: 'Detection recorded' });
-});
 
-const uri = "mongodb://localhost:27017/your_database_name"; // Replace with your MongoDB URI
+app.use(express.json());
 
 // MongoDB connection
+const uri = "mongodb://localhost:27017/your_database_name"; // Replace with your database name
 try {
   mongoose.connect(uri, {
     useNewUrlParser: true,
@@ -24,8 +23,6 @@ try {
   console.error("Error connecting to the database:", error);
 }
 
-app.use(express.json());
-
 // Multer setup for image upload (in memory)
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -33,6 +30,36 @@ const upload = multer({ storage: storage });
 // Root endpoint
 app.get('/', (req, res) => {
   res.send('Hello from the backend!');
+});
+
+
+app.post('/pothole-detection', async (req, res) => {
+  try {
+    const { latitude, longitude, timestamp } = req.body;
+
+    // Create new detection
+    const detection = new Detection({
+      latitude,
+      longitude,
+      timestamp
+    });
+
+    // Save to database
+    await detection.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Pothole detection recorded successfully',
+      data: detection
+    });
+  } catch (error) {
+    console.error('Error saving detection:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to record pothole detection',
+      error: error.message
+    });
+  }
 });
 
 // Signup endpoint
@@ -76,6 +103,7 @@ app.post('/Login', async (req, res) => {
   }
 });
 
+// Profile fetch endpoint
 app.get('/Profile', async (req, res) => {
   const email = req.query.email;
   try {

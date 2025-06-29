@@ -33,6 +33,47 @@ app.get('/', (req, res) => {
 });
 
 
+// Get all pothole detections
+app.get('/detections', async (req, res) => {
+  try {
+    const detections = await Detection.find();
+    res.json(detections);
+  } catch (error) {
+    console.error('Error fetching detections:', error);
+    res.status(500).json({ message: 'Failed to fetch detections' });
+  }
+});
+
+
+// Update detection status
+app.patch('/detections/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    const detection = await Detection.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    if (!detection) return res.status(404).json({ message: 'Detection not found' });
+    res.json(detection);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update status' });
+  }
+});
+
+// Delete detection
+app.delete('/detections/:id', async (req, res) => {
+  try {
+    const detection = await Detection.findByIdAndDelete(req.params.id);
+    if (!detection) return res.status(404).json({ message: 'Detection not found' });
+    res.json({ message: 'Detection deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete detection' });
+  }
+});
+
+
+
 app.post('/pothole-detection', async (req, res) => {
   try {
     const { latitude, longitude, timestamp } = req.body;
@@ -41,7 +82,8 @@ app.post('/pothole-detection', async (req, res) => {
     const detection = new Detection({
       latitude,
       longitude,
-      timestamp
+      timestamp,
+      status: "pending"
     });
 
     // Save to database

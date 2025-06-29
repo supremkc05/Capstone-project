@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+
+@theme{
+  --color-secondary: #9DACE6;
+  --color-main: #001877;
+  --color-darkRed: #FF0D11;
+  --color-lightRed: #FFE4E6;
+  --color-darkGreen: #16A34A;
+  --color-lightGreen: #DCFCE7;
+}
+
+.leaflet-container{
+  @apply h-1/1
+}

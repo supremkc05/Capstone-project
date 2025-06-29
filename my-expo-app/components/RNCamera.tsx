@@ -74,10 +74,10 @@ export default function RNCamera() {
       const confidence = outputs[0]['0'];
       const now = Date.now();
 
-      if (confidence > 150 && now - lastReportTime.current > REPORT_INTERVAL) {
+      if (confidence > 200 && now - lastReportTime.current > REPORT_INTERVAL) {
         console.log(`🔥 Pothole detected with confidence: ${confidence}`);
         lastReportTime.current = now;
-        onPotholeDetected(); // call JS from worklet safely
+        onPotholeDetected();
       }
     } catch (error) {
       console.error('❌ Model run error:', error);

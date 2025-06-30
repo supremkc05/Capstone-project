@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function PotholesTable() {
+export default function PotholesTable({ onShowLocation }) {
   const [data, setData] = useState([])
 
   const fetchDetections = () => {
@@ -44,8 +44,7 @@ export default function PotholesTable() {
         <thead>
           <tr>
             <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Latitude</th>
-            <th className="px-4 py-2">Longitude</th>
+            <th className="px-4 py-2">Location</th>
             <th className="px-4 py-2">Timestamp</th>
             <th className="px-4 py-2">Status</th>
             <th className="px-4 py-2">Action</th>
@@ -55,8 +54,14 @@ export default function PotholesTable() {
           {data.map((item, idx) => (
             <tr key={item._id || idx} className="text-center">
               <td className="px-4 py-2">{item._id}</td>
-              <td className="px-4 py-2">{item.latitude}</td>
-              <td className="px-4 py-2">{item.longitude}</td>
+              <td className="px-4 py-2">
+                <button
+                  className="p-2 rounded bg-blue-200 text-blue-800"
+                  onClick={() => onShowLocation([item.latitude, item.longitude])}
+                >
+                  Show
+                </button>
+              </td>
               <td className="px-4 py-2">{new Date(item.timestamp).toLocaleString()}</td>
               <td className={`px-4 py-2 font-bold`}>
                 <button

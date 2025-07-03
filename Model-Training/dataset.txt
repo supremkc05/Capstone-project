@@ -1,0 +1,10 @@
+
+#Dataset download link for roboflow
+!pip install roboflow
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="UpVCgx1ztAL14OE0q2L2")
+project = rf.workspace("iims").project("pothole-classification-gss7u")
+version = project.version(1)
+dataset = version.download("folder")
+                

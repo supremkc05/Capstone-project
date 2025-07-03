@@ -1,0 +1,8 @@
+path: ../Custom-Workflow-Object-Detection-12/data.yaml 
+
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 1
+names: 'pothole'

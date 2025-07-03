@@ -1,0 +1,70 @@
+## Quick Start Guide for model training
+
+### Step 1: Setup Environment
+```bash
+# Install required packages
+pip install torch torchvision
+pip install ultralytics
+pip install roboflow
+
+# Clone YOLOv5 and also install the requirements.txt
+git clone https://github.com/ultralytics/yolov5
+cd yolov5
+pip install -r requirements.txt
+
+### Step 2: Prepare Your Dataset
+Annotated data was used from the robolow which is present in the dataset.txt
+
+
+**data.yaml example:**
+the structured data.yaml file is updated with the following format:
+path: ../Custom-Workflow-Object-Detection-12/data.yaml 
+
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 1 #based on your labes in your dataset
+names: 'pothole' #also update this
+
+
+### Step 3: Start Training
+basic command for training model in bash:
+python train.py --img 640 --batch 16 --epochs 100 --data data.yaml --weights yolov5n.pt
+
+
+**parameters used**
+- `--img 640`: Image size (640x640 pixels)
+- `--batch 16`: Process 16 images at once
+- `--epochs 100`: Train for 100 rounds
+- `--data data.yaml`: Your dataset file
+- `--weights yolov5n.pt`: Starting model (nano = smallest/fastest)
+
+### Step 4: Monitor Training
+Training results will be saved in: `runs/train/exp/`
+- `weights/best.pt` = Your trained model
+- `weights/last.pt` = Latest checkpoint
+- Training charts and logs
+
+
+**Testing:**
+bash
+# Single image
+python detect.py --weights best.pt --source image.jpg
+
+# Folder of images
+python detect.py --weights best.pt --source images_folder/
+
+# Webcam
+python detect.py --weights best.pt --source 0
+
+**Export:**
+use bash
+# For mobile apps
+python export.py --weights best.pt --include tflite
+
+# For web
+python export.py --weights best.pt --include onnx
+
+# Multiple formats
+python export.py --weights best.pt --include tflite onnx torchscript

@@ -4,9 +4,10 @@ import TopBar from './components/TopBar'
 import Home from './Pages/Home'
 import Potholes from './Pages/Potholes'
 import './App.css'
+import UsersPage from './Pages/UsersPage'
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <Router>
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/potholes" element={<Potholes />} />
+          <Route path='/users' element={<UsersPage/>}/>
         </Routes>
       </div>
     </Router>

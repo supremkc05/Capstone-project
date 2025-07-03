@@ -11,7 +11,7 @@ import { Worklets } from 'react-native-worklets-core';
 import * as Location from 'expo-location';
 
 export default function RNCamera() {
-  const objectDetection = useTensorflowModel(require('../assets/model/teachable.tflite'));
+  const objectDetection = useTensorflowModel(require('../assets/model/float16.tflite'));
   const model = objectDetection.state === 'loaded' ? objectDetection.model : undefined;
   const [location, setLocation] = React.useState<Location.LocationObject | null>(null);
   const [coordinates, setCoordinates] = React.useState<{latitude: number, longitude: number} | null>(null);

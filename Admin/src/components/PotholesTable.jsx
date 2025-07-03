@@ -56,7 +56,7 @@ export default function PotholesTable({ onShowLocation }) {
               <td className="px-4 py-2">{item._id}</td>
               <td className="px-4 py-2">
                 <button
-                  className="p-2 rounded bg-blue-200 text-blue-800"
+                  className="p-2 rounded bg-blue-200 text-blue-800 hover:bg-blue-100"
                   onClick={() => onShowLocation([item.latitude, item.longitude])}
                 >
                   Show
@@ -65,7 +65,7 @@ export default function PotholesTable({ onShowLocation }) {
               <td className="px-4 py-2">{new Date(item.timestamp).toLocaleString()}</td>
               <td className={`px-4 py-2 font-bold`}>
                 <button
-                  className={`p-2 rounded-sm ${item.status === 'pending' ? 'text-darkRed bg-lightRed' : 'text-darkGreen bg-lightGreen'}`}
+                  className={`p-2 rounded-sm ${item.status === 'pending' ? 'text-darkRed bg-lightRed hover:bg-lightRed/50' : 'text-darkGreen bg-lightGreen hover:bg-lightGreen/50'}`}
                   onClick={() => handleStatusChange(item._id, item.status)}
                   disabled={item.status === 'resolved'}
                   style={{ cursor: item.status === 'pending' ? 'pointer' : 'not-allowed' }}
@@ -75,7 +75,7 @@ export default function PotholesTable({ onShowLocation }) {
               </td>
               <td className="px-4 py-2">
                 <button
-                  className='p-2 rounded-sm text-darkRed bg-lightRed'
+                  className='p-2 rounded-sm text-darkRed bg-lightRed font-bold hover:bg-lightRed/50'
                   onClick={() => handleDelete(item._id)}
                 >
                   Delete

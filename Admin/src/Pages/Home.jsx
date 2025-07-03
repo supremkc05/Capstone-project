@@ -13,9 +13,9 @@ export default function Home() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Fetch users count
-    axios.get('http://localhost:3000/users') // You need to implement this endpoint
-      .then(res => setUsers(res.data.count || 0))
+    // Fetch total users
+    axios.get('http://localhost:3000/users')
+      .then(res => setUsers(res.data.length || 0)) // ✅ Fix: count total users
       .catch(() => setUsers(0));
 
     // Fetch pothole detections
@@ -30,10 +30,10 @@ export default function Home() {
 
   return (
     <div className='grid grid-cols-3 gap-4 p-4 w-full h-full'>
-      <div className="bg-white shadow-inner shadow-black/30 rounded p-6 text-center text-main font-bold h-full">
+      <button className="bg-white shadow-inner shadow-black/30 rounded p-6 text-center text-main font-bold h-full" onClick={()=> navigate('/users')}>
         <FontAwesomeIcon icon={faUsers} className='p-6 bg-secondary rounded-2xl text-main text-2xl' />
         <p className='text-xl'>{users} Total users</p>
-      </div>
+      </button>
       <div className="bg-white shadow-inner shadow-black/30 rounded p-6 text-center text-main font-bold h-full">
         <FontAwesomeIcon icon={faCircleExclamation} className='p-6 bg-lightRed rounded-2xl text-darkRed text-2xl' />
         <p className='text-xl'>{detectedCount} potholes detected</p>
